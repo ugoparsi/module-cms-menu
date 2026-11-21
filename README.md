@@ -2,15 +2,15 @@
 
 Choose which CMS pages appear alongside categories in the storefront menu of each Maho store view.
 
-## Install
+## Install the preview
 
 The module targets Maho 27.1 and requires PHP 8.5.1 or later. The Composer installation was verified on the 27.1 development branch at `2de25e973` with SQLite.
 
-Place the package in `../cms-navigation-package` relative to the store project. From the store project, add the path repository and install the module.
+From your Maho Composer project, register the GitHub repository and install the preview.
 
 ```bash
-composer config repositories.cms-menu '{"type":"path","url":"../cms-navigation-package","options":{"symlink":false,"versions":{"ugoparsi/module-cms-menu":"0.1.0"}}}'
-composer require ugoparsi/module-cms-menu:^0.1
+composer config repositories.cms-menu vcs https://github.com/ugoparsi/module-cms-menu
+composer require ugoparsi/module-cms-menu:dev-main
 ./maho cache:flush
 ```
 
