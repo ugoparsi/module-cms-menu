@@ -63,7 +63,7 @@ final class Storefront_CmsMenu_Model_Observer
         $menu = $event->getData('menu');
         $store = Mage::app()->getStore();
         $pages = $this->getVisiblePages($identifiers, (int) $store->getId());
-        $query = Mage::helper('core/url')->getCanonicalStoreQuery($store);
+        $query = $this->getStoreQuery($store);
         foreach ($identifiers as $identifier) {
             if (!isset($pages[$identifier])) {
                 continue;
@@ -79,6 +79,29 @@ final class Storefront_CmsMenu_Model_Observer
                 'url' => Mage::getUrl('', $params),
             ], 'id', $menu->getTree(), $menu));
         }
+    }
+
+    /** @return array<string, string> */
+    private function getStoreQuery(Mage_Core_Model_Store $store): array
+    {
+        $helper = Mage::helper('core/url');
+        if (method_exists($helper, 'getCanonicalStoreQuery')) {
+            return $helper->getCanonicalStoreQuery($store);
+        }
+
+        $url = Mage::getModel('core/url')->setStore($store)->getBaseUrl();
+        $website = $store->getWebsite();
+        $group = $store->getGroup();
+        foreach ([$website ? $website->getDefaultStore() : null, $group ? $group->getDefaultStore() : null] as $default) {
+            if ($default
+                && (int) $default->getId() !== (int) $store->getId()
+                && Mage::getModel('core/url')->setStore($default)->getBaseUrl() === $url
+            ) {
+                return ['___store' => $store->getCode()];
+            }
+        }
+
+        return [];
     }
 
     /**

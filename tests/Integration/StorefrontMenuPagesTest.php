@@ -43,7 +43,8 @@ it('adds the selected active CMS links to the native menu per store view', funct
     $otherId = (int) $other->getId();
     $key = 'demo-menu-' . bin2hex(random_bytes(4));
     $root = Mage::getModel('catalog/category')->load($default->getRootCategoryId());
-    $category = Mage::getService('catalog/category')->newCategory((int) $root->getId())
+    $category = Mage::getModel('catalog/category')->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
+    $category->setAttributeSetId($category->getDefaultAttributeSetId())->setPath($root->getPath())
         ->setName('Demo category link')->setUrlKey($key . '-category')->setIncludeInMenu(1)->setIsActive(1)->save();
     $pages = [];
     $config = Mage::getConfig();
@@ -60,9 +61,9 @@ it('adds the selected active CMS links to the native menu per store view', funct
         $alternatePath = $path . '?___store=' . $code;
         expect(storefrontMenuLinks($path))->toHaveKey('Demo category link')->not->toHaveKey($title);
 
-        $selected = implode(',', [$key, $key . '-local', $key . '-disabled', $key . '-missing']);
+        $selected = implode(',', [$key, $key . '-local', $key . '-disabled', $key . '-missing', $key . '|' . $pages[1]->getId()]);
         $config->saveConfig($setting, $selected, 'stores', $defaultId);
-        $config->saveConfig($setting, $selected . ',' . $key . '|' . $pages[1]->getId(), 'stores', $otherId);
+        $config->saveConfig($setting, $selected, 'stores', $otherId);
         $config->cleanCache();
 
         $defaultLinks = storefrontMenuLinks($path);
@@ -83,6 +84,7 @@ it('adds the selected active CMS links to the native menu per store view', funct
             ->and($alternate['Demo alternate help'])->toEndWith('/' . $key . '-local/?___store=' . $code)
             ->and($alternate)->not->toHaveKey('Guide updated')
             ->and($alternate)->not->toHaveKey('Demo disabled help');
+        expect(storefrontMenuLinks($path))->toBe($updatedLinks);
 
         $pages[1]->setIsActive(false)->save();
         $fallback = storefrontMenuLinks($alternatePath);

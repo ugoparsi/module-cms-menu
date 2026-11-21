@@ -4,7 +4,7 @@ Choose which CMS pages appear alongside categories in the storefront menu of eac
 
 ## Install the preview
 
-The module targets Maho 27.1 and requires PHP 8.5.1 or later. The Composer installation was verified on the 27.1 development branch at `2de25e973` with SQLite.
+The module supports Maho 26.11.3 and the 27.1 series. It requires PHP 8.5.1 or later. The Composer installation and menu tests passed on Maho 26.11.3 and on 27.1 development commit `2de25e973` with SQLite.
 
 From your Maho Composer project, register the GitHub repository and install the preview.
 
@@ -14,7 +14,7 @@ composer require ugoparsi/module-cms-menu:dev-main
 ./maho cache:flush
 ```
 
-For a Maho 27.1 source checkout, set `COMPOSER_ROOT_VERSION=27.1.x-dev` on the Composer require command.
+For a Maho source checkout, set `COMPOSER_ROOT_VERSION` on the Composer require command. Use `26.11.3` for that tag or `27.1.x-dev` for the development branch tested here.
 
 ## Choose pages
 
@@ -24,7 +24,7 @@ Maho uses the active CMS page for the current store view when a page shares its 
 
 ## Test
 
-Run the integration test from an isolated Maho source checkout with the module installed. The example uses a store configured at `http://localhost:8935/`.
+Run the integration test from an isolated Maho source checkout with the module installed. Enable block caching to exercise cache invalidation. Set the port to match the store's base URL. The example uses `http://localhost:8935/`.
 
 ```bash
 MAHO_BROWSER_PORT=8935 vendor/bin/pest vendor/ugoparsi/module-cms-menu/tests/Integration/StorefrontMenuPagesTest.php
