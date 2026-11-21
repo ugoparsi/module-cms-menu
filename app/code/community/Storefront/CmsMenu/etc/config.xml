@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+SPDX-FileCopyrightText: 2026 Maho <https://mahocommerce.com>
+SPDX-License-Identifier: AFL-3.0
+-->
+<config>
+    <modules>
+        <Storefront_CmsMenu>
+            <version>0.1.0</version>
+        </Storefront_CmsMenu>
+    </modules>
+    <default>
+        <web>
+            <default>
+                <cms_menu_pages/>
+            </default>
+        </web>
+    </default>
+</config>

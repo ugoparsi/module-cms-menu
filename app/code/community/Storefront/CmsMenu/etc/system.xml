@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+SPDX-FileCopyrightText: 2026 Maho <https://mahocommerce.com>
+SPDX-License-Identifier: AFL-3.0
+-->
+<config>
+    <sections>
+        <web>
+            <groups>
+                <default>
+                    <fields>
+                        <cms_menu_pages translate="label comment" module="cms">
+                            <label>CMS Pages in the Storefront Menu</label>
+                            <comment>The menu shows the selected pages available in this store view.</comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_cms_page</source_model>
+                            <can_be_empty>1</can_be_empty>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cms_menu_pages>
+                    </fields>
+                </default>
+            </groups>
+        </web>
+    </sections>
+</config>
