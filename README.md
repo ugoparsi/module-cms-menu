@@ -2,19 +2,19 @@
 
 Choose which CMS pages appear alongside categories in the storefront menu of each Maho store view.
 
-## Install the preview
+## Install
 
-The module supports Maho 26.11.3 and the 27.1 series. It requires PHP 8.5.1 or later. The Composer installation and menu tests passed on Maho 26.11.3 and on 27.1 development commit `2de25e973` with SQLite.
+The module requires PHP 8.5.1 or later. It supports Maho 26.11.3 and later 26.11 patches, and the 27.1 series. The Composer installation and menu tests passed with SQLite on Maho 26.11.3 and on 27.1 development commit `2de25e973`. Installation also passed in Maho Starter 3.0.0 with Maho 26.11.3.
 
-From your Maho Composer project, register the GitHub repository and install the preview.
+From your Maho Composer project, register the GitHub repository and install the module.
 
 ```bash
 composer config repositories.cms-menu vcs https://github.com/ugoparsi/module-cms-menu
-composer require ugoparsi/module-cms-menu:dev-main
+composer require 'ugoparsi/module-cms-menu:^0.1'
 ./maho cache:flush
 ```
 
-For a Maho source checkout, set `COMPOSER_ROOT_VERSION` on the Composer require command. Use `26.11.3` for that tag or `27.1.x-dev` for the development branch tested here.
+The same `composer require` command switches an existing preview installation to a versioned release.
 
 ## Choose pages
 
@@ -24,9 +24,10 @@ Maho uses the active CMS page for the current store view when a page shares its 
 
 ## Test
 
-Run the integration test from an isolated Maho source checkout with the module installed. Enable block caching to exercise cache invalidation. Set the port to match the store's base URL. The example uses `http://localhost:8935/`.
+Install the module in an isolated Maho source checkout. Set `COMPOSER_ROOT_VERSION=26.11.3` on `composer require` for that tag, or `COMPOSER_ROOT_VERSION=27.1.x-dev` for the development branch tested here. Enable the cache and set the port to match the store's base URL. The example uses `http://localhost:8935/`.
 
 ```bash
+./maho cache:enable
 MAHO_BROWSER_PORT=8935 vendor/bin/pest vendor/ugoparsi/module-cms-menu/tests/Integration/StorefrontMenuPagesTest.php
 ```
 
